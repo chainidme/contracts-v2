@@ -27,4 +27,7 @@ interface IdentityInterface {
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function credentialURI(uint256 tokenId) external view returns (string memory);
+
+    /* ========== Events ========== */
+    
 }

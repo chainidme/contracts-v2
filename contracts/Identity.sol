@@ -9,11 +9,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import { IRegistry } from "./interfaces/IRegistry.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
+import { MultiSigWallet } from "./identity/MultiSigWallet.sol";
+
 /// @title Identity Contract
-/// @author Prasad <prasad@chainid.me>
+/// @author Prasad Kumkar - <prasad@chainid.me>
 /// @notice You can use this identity to verify
 /// @dev All function calls are currently implemented without side effects
-contract Identity is Ownable, ERC721 {
+contract Identity is Ownable, ERC721, MultiSigWallet {
 
     using Counters for Counters.Counter;
     Counters.Counter private _credentialIds;
@@ -29,7 +31,10 @@ contract Identity is Ownable, ERC721 {
 
     bytes32 public id;
 
-    constructor(bytes32 _id) ERC721("ChainID Credential", "CRED"){
+    constructor(bytes32 _id) 
+    ERC721("ChainID Credential", "CRED") 
+    MultiSigWallet(tx.origin)
+    {
         id = _id;
     }
 
