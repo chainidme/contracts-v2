@@ -1,0 +1,22 @@
+{
+  "name": "chainid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chainidme/identity.git"
+  },
+  "author": "prasad-kumkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chainidme/identity/issues"
+  },
+  "homepage": "https://github.com/chainidme/identity#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.3"
+  }
+}
