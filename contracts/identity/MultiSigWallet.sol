@@ -1,22 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import { IMultiSigWallet } from "./../interfaces/IMultiSigWallet.sol";
+
 /// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.
 /// @author Stefan George - <stefan.george@consensys.net>, Prasad Kumkar - <prasad@chainid.me>
-contract MultiSigWallet {
-
-    /*
-     *  Events
-     */
-    event Confirmation(address indexed sender, uint indexed transactionId);
-    event Revocation(address indexed sender, uint indexed transactionId);
-    event Submission(uint indexed transactionId);
-    event Execution(uint indexed transactionId);
-    event ExecutionFailure(uint indexed transactionId);
-    event Deposit(address indexed sender, uint value);
-    event OwnerAddition(address indexed owner);
-    event OwnerRemoval(address indexed owner);
-    event RequirementChange(uint required);
+contract MultiSigWallet is IMultiSigWallet {
 
     /*
      *  Constants
@@ -269,11 +258,11 @@ contract MultiSigWallet {
 
     /// @dev Returns the confirmation status of a transaction.
     /// @param transactionId Transaction ID.
-    /// @return Confirmation status.
+    /// @return result Confirmation status.
     function isConfirmed(uint transactionId)
         public
         view
-        returns (bool)
+        returns (bool result)
     {
         uint count = 0;
         for (uint i=0; i<owners.length; i++) {
