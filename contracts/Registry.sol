@@ -9,30 +9,37 @@ import { Pausable } from "@openzeppelin/contracts/security/Pausable.sol";
 
 contract Registry is Ownable, Pausable {
 
-    // contract address => identity mapping
-    mapping(bytes32 => address) public identity;
+    // uint constant MAX_ID_LENGTH = 255;
 
-    uint registryFee;
+    // contract identity => address mapping
+    mapping(bytes32 => address) public ownerOf;
 
-    constructor(uint _registryFee) {
-        registryFee = _registryFee;
-    }
+    uint[] registryFee = [0, 10**22, 10**21, 10**20, 10**20, 10**19, 10**19];
 
-    function updateFee(uint newRegistryFee) external onlyOwner {
-        registryFee = newRegistryFee;
+    // constructor() {}
+
+
+    function updateFee(uint newRegistryFee, uint index) external onlyOwner {
+        registryFee[index] = newRegistryFee;
     }
 
     // registering new identity
-    function newIdentity(bytes32 _id) external payable {
-        require(msg.value >= registryFee, "Payment: Registry Fee required");
+    function newIdentity(bytes memory _id) external payable {
+        uint requiredFee;
+        if(_id.length > 6) requiredFee = registryFee[_id.length];
+        else requiredFee = 10**18;
+        
+        require(msg.value >= requiredFee, "Payment: Registry Fee required");
 
-        Identity id = new Identity(_id);
+        bytes32 _identity = keccak256(_id);
+        Identity id = new Identity(_identity);
+        id.setBaseURI(string(_id));
         id.transferOwnership(msg.sender);
 
-        identity[_id] = address(id);
+        ownerOf[_identity] = address(id);
     }
     
     function getIdentity(bytes32 _user) view public returns(address){
-        return IdentityInterface(identity[_user]).owner();
+        return IdentityInterface(ownerOf[_user]).owner();
     }
 }
